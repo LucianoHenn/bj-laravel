@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('casino_cards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->tinyInteger('card_order');
             $table->unsignedBigInteger('play_id');
             $table->foreign('play_id')->on('plays')->references('id');
             $table->unsignedBigInteger('card_id');

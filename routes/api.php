@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('cards', [GameController::class, 'getAllCards']);
+
+Route::post('play', [GameController::class, 'startGame']);
+Route::get('hit', [GameController::class, 'hit']);
+Route::post('stay', [GameController::class, 'stay']);
+
+Route::get('unauthorized', function (){
+    return response()->json(['error' => 'Unauthenticated.'], 401);
+})->name('unauthorized');
+
+Route::group([
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::get('user-profile', [AuthController::class, 'userProfile']);
+});

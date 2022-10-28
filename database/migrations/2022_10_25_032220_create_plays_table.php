@@ -15,13 +15,15 @@ return new class extends Migration
     {
         Schema::create('plays', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->on('users')->references('id');
             $table->string('status');
-            $table->string('result');
+            $table->string('result')->nullable();
+            $table->tinyInteger('playerTotal');
+            $table->tinyInteger('casinoTotal');
             $table->integer('bet');
-            $table->integer('amountWonOrLost');
+            $table->integer('amountWonOrLost')->nullable();
+            $table->timestamps();
         });
     }
 

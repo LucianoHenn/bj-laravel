@@ -9,5 +9,5 @@ class Play extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'status', 'result', 'bet', 'amountWonOrLost'];
+    protected $fillable = ['user_id', 'status', 'result', 'bet', 'amountWonOrLost','casinoTotal','playerTotal'];
 }
