@@ -23,6 +23,27 @@ class GameController extends Controller
         return response()->json([Card::all()]);
     }
 
+    public function init(Request $request){
+        $user = auth('api')->user();
+        if($play = Play::where('user_id', $user->id)->where('status', '!=', 'FINISHED')->first())
+            return response()->json(['gameStatus' => 'PLAYING']);
+        return response()->json(['gameStatus' => 'FINISHED']);
+
+    }
+
+    public function resumeGame(Request $request){
+        $user = auth('api')->user();
+        $play = Play::where('user_id', $user->id)->where('status', '!=', 'FINISHED')->first();
+        $userTotal = $play->playerTotal;
+        $userCards = DB::table('player_cards')->select('card_id','card_value')->where('play_id', $play->id)->orderBy('created_at')->get();
+        $dealerCard = DB::table('casino_cards')->select('card_id','card_value')
+            ->where('play_id', $play->id)->orderBy('created_at')->first();
+
+
+        return response()->json(['userCards' =>  $userCards, 'dealerCard' => $dealerCard, 'userTotal' =>  $userTotal]);
+    }
+
+
     public  function  startGame(Request $request){
         $user = auth('api')->user();
         if($play = Play::where('user_id', $user->id)->where('status', '!=', 'FINISHED')->first()){

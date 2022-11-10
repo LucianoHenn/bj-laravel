@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -20,11 +21,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// GAME ROUTES
 Route::get('cards', [GameController::class, 'getAllCards']);
-
+Route::get('init', [GameController::class, 'init']);
+Route::get('resume', [GameController::class, 'resumeGame']);
 Route::post('play', [GameController::class, 'startGame']);
 Route::get('hit', [GameController::class, 'hit']);
 Route::post('stay', [GameController::class, 'stay']);
+
+
+// REPORTS ROUTES
+Route::get('resultAvg', [ReportController::class, 'resultAvg']);
+Route::get('dailyGames', [ReportController::class, 'dailyGames']);
+Route::get('dealerWinningCards', [ReportController::class, 'dealerWinningCards']);
 
 Route::get('unauthorized', function (){
     return response()->json(['error' => 'Unauthenticated.'], 401);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Validator;
 use App\Models\User;
 
@@ -95,7 +96,18 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function userProfile() {
-        return response()->json(auth('api')->user());
+        $user = auth('api')->user();
+
+
+        $totalGames = DB::select("SELECT COUNT(*) as game_amount from plays where user_id = $user->id ");
+
+        $totalWon = DB::select("SELECT COUNT(*) as game_amount from plays where  result = 'WON' and user_id = $user->id ");
+
+        return response()->json(['games_amount' => $totalGames[0]->game_amount,
+                                'winning_percentage' => $totalWon[0]->game_amount,
+                                'name' => $user->name,
+                                'email' => $user->email,
+                                'created_at' => $user->created_at]);
     }
 
     /**
