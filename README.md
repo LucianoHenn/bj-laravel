@@ -1,3 +1,5 @@
+# Blackjack Project -- API with Laravel and MySql
+
 
 # Getting started
 
